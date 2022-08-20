@@ -67,6 +67,9 @@ private:
     SRecEvent* _recEvent;
     SQTrackVector* _recTrackVector;
     SQTrackVector* _recSt3TrackletVector;
+    //flag
+    SQTrackVector* _recSt23TrackletVector;
+
     SQDimuonVector* _recDimuonVector;
 
     SQEvent_v1* _sqEvent;
@@ -252,6 +255,45 @@ private:
     float st3tracklet_pz_vtx[100];
     float st3tracklet_m[100];
     int st3tracklet_charge[100];
+    
+    //flag
+    int n_st23tracklets;
+    float st23tracklet_x_CAL[100];
+    float st23tracklet_y_CAL[100];
+    float st23tracklet_chisq[100];
+    float st23tracklet_prob[100];
+    float st23tracklet_quality[100];
+    int st23tracklet_isValid[100];
+    int st23tracklet_nhits_st1[100];
+    int st23tracklet_nhits_st2[100];
+    int st23tracklet_nhits_st3[100];
+    int st23tracklet_nhits[100];
+    float st23tracklet_x_target[100];
+    float st23tracklet_y_target[100];
+    float st23tracklet_z_target[100];
+    float st23tracklet_px_target[100];
+    float st23tracklet_py_target[100];
+    float st23tracklet_pz_target[100];
+    float st23tracklet_x_st1[100];
+    float st23tracklet_y_st1[100];
+    float st23tracklet_z_st1[100];
+    float st23tracklet_px_st1[100];
+    float st23tracklet_py_st1[100];
+    float st23tracklet_pz_st1[100];
+    float st23tracklet_x_st3[100];
+    float st23tracklet_y_st3[100];
+    float st23tracklet_z_st3[100];
+    float st23tracklet_px_st3[100];
+    float st23tracklet_py_st3[100];
+    float st23tracklet_pz_st3[100];
+    float st23tracklet_x_vtx[100];
+    float st23tracklet_y_vtx[100];
+    float st23tracklet_z_vtx[100];
+    float st23tracklet_px_vtx[100];
+    float st23tracklet_py_vtx[100];
+    float st23tracklet_pz_vtx[100];
+    float st23tracklet_m[100];
+    int st23tracklet_charge[100];
 
     int n_truthdimuons;
     float truthdimuon_mass[100];
