@@ -209,6 +209,9 @@ int SimAna::ResetEvalVars()
     n_truthtracks = 0; // number of truth tracks
     n_tracks = 0; // number of reconstructed tracks
     n_st3tracklets = 0; // number of station 3 tracklets
+	//flag
+    n_st23tracklets = 0; // number of station 23 tracklets
+
     for (int i = 0; i < 100; ++i) {
         truthtrack_charge[i] = std::numeric_limits<int>::max(); // truth track charge
         truthtrack_x_st1[i] = std::numeric_limits<int>::max(); // position of truth track at station 1 (x)
@@ -305,6 +308,44 @@ int SimAna::ResetEvalVars()
         st3tracklet_nhits_st1[i] = std::numeric_limits<float>::max();
         st3tracklet_nhits_st2[i] = std::numeric_limits<float>::max();
         st3tracklet_nhits_st3[i] = std::numeric_limits<float>::max();
+	    
+//flag
+        st23tracklet_charge[i] = std::numeric_limits<int>::max();
+        st23tracklet_nhits[i] = std::numeric_limits<int>::max();
+        st23tracklet_x_target[i] = std::numeric_limits<float>::max();
+        st23tracklet_y_target[i] = std::numeric_limits<float>::max();
+        st23tracklet_z_target[i] = std::numeric_limits<float>::max();
+        st23tracklet_px_target[i] = std::numeric_limits<float>::max();
+        st23tracklet_py_target[i] = std::numeric_limits<float>::max();
+        st23tracklet_pz_target[i] = std::numeric_limits<float>::max();
+        st23tracklet_x_st1[i] = std::numeric_limits<float>::max();
+        st23tracklet_y_st1[i] = std::numeric_limits<float>::max();
+        st23tracklet_z_st1[i] = std::numeric_limits<float>::max();
+        st23tracklet_px_st1[i] = std::numeric_limits<float>::max();
+        st23tracklet_py_st1[i] = std::numeric_limits<float>::max();
+        st23tracklet_pz_st1[i] = std::numeric_limits<float>::max();
+        st23tracklet_x_st3[i] = std::numeric_limits<float>::max();
+        st23tracklet_y_st3[i] = std::numeric_limits<float>::max();
+        st23tracklet_z_st3[i] = std::numeric_limits<float>::max();
+        st23tracklet_px_st3[i] = std::numeric_limits<float>::max();
+        st23tracklet_py_st3[i] = std::numeric_limits<float>::max();
+        st23tracklet_pz_st3[i] = std::numeric_limits<float>::max();
+        st23tracklet_x_vtx[i] = std::numeric_limits<float>::max();
+        st23tracklet_y_vtx[i] = std::numeric_limits<float>::max();
+        st23tracklet_z_vtx[i] = std::numeric_limits<float>::max();
+        st23tracklet_px_vtx[i] = std::numeric_limits<float>::max();
+        st23tracklet_py_vtx[i] = std::numeric_limits<float>::max();
+        st23tracklet_pz_vtx[i] = std::numeric_limits<float>::max();
+        st23tracklet_m[i] = std::numeric_limits<float>::max();
+        st23tracklet_x_CAL[i] = std::numeric_limits<float>::max();
+        st23tracklet_y_CAL[i] = std::numeric_limits<float>::max();
+        st23tracklet_chisq[i] = std::numeric_limits<float>::max();
+        st23tracklet_prob[i] = std::numeric_limits<float>::max();
+        st23tracklet_quality[i] = std::numeric_limits<float>::max();
+        st23tracklet_isValid[i] = std::numeric_limits<int>::max();
+        st23tracklet_nhits_st1[i] = std::numeric_limits<float>::max();
+        st23tracklet_nhits_st2[i] = std::numeric_limits<float>::max();
+        st23tracklet_nhits_st3[i] = std::numeric_limits<float>::max();
     }
 
     /** Dimuons:
@@ -711,6 +752,54 @@ int SimAna::process_event(PHCompositeNode* topNode)
 
             ++n_st3tracklets;
             if (n_st3tracklets >= 100)
+                break;
+        }
+        //std::cout<<"print out of n_st3tracklets: "<<n_st3tracklets<<std::endl;
+	    
+//flag
+ n_st23tracklets = 0;
+        //std::cout<<"about to enter st3tracklet loop"<<std::endl;
+        int n_st23trackletsINDEX = _legacyContainer ? _recEvent->getNSt23Tracklets() : _recSt23TrackletVector->size();
+        for (int itrk = 0; itrk < n_st23trackletsINDEX; ++itrk) {
+            SRecTrack* track = _legacyContainer ? &(_recEvent->getSt23Tracklet(n_st23tracklets)) : dynamic_cast<SRecTrack*>(_recSt23TrackletVector->at(n_st23tracklets));
+            st23tracklet_charge[n_st23tracklets] = track->getCharge();
+            st23tracklet_nhits[n_st23tracklets] = track->getNHits();
+            st23tracklet_x_target[n_st23tracklets] = (track->getTargetPos()).X();
+            st23tracklet_y_target[n_st23tracklets] = (track->getTargetPos()).Y();
+            st23tracklet_z_target[n_st23tracklets] = (track->getTargetPos()).Z();
+            st23tracklet_px_target[n_st23tracklets] = (track->getTargetMom()).Px();
+            st23tracklet_py_target[n_st23tracklets] = (track->getTargetMom()).Py();
+            st23tracklet_pz_target[n_st23tracklets] = (track->getTargetMom()).Pz();
+            st23tracklet_x_st1[n_st23tracklets] = (track->getPositionVecSt1()).X();
+            st23tracklet_y_st1[n_st23tracklets] = (track->getPositionVecSt1()).Y();
+            st23tracklet_z_st1[n_st23tracklets] = (track->getPositionVecSt1()).Z();
+            st23tracklet_px_st1[n_st23tracklets] = (track->getMomentumVecSt1()).Px();
+            st23tracklet_py_st1[n_st23tracklets] = (track->getMomentumVecSt1()).Py();
+            st23tracklet_pz_st1[n_st23tracklets] = (track->getMomentumVecSt1()).Pz();
+            st23tracklet_x_st3[n_st23tracklets] = (track->getPositionVecSt3()).X();
+            st23tracklet_y_st3[n_st23tracklets] = (track->getPositionVecSt3()).Y();
+            st23tracklet_z_st3[n_st23tracklets] = (track->getPositionVecSt3()).Z();
+            st23tracklet_px_st3[n_st23tracklets] = (track->getMomentumVecSt3()).Px();
+            st23tracklet_py_st3[n_st23tracklets] = (track->getMomentumVecSt3()).Py();
+            st23tracklet_pz_st3[n_st23tracklets] = (track->getMomentumVecSt3()).Pz();
+            st23tracklet_x_vtx[n_st23tracklets] = (track->getVertexPos()).X();
+            st23tracklet_y_vtx[n_st23tracklets] = (track->getVertexPos()).Y();
+            st23tracklet_z_vtx[n_st23tracklets] = (track->getVertexPos()).Z();
+            st23tracklet_px_vtx[n_st23tracklets] = (track->getVertexMom()).X();
+            st23tracklet_py_vtx[n_st23tracklets] = (track->getVertexMom()).Y();
+            st23tracklet_pz_vtx[n_st23tracklets] = (track->getVertexMom()).Z();
+            st23tracklet_x_CAL[n_st23tracklets] = st23tracklet_x_st3[n_st23tracklets] + (st23tracklet_px_st3[n_st23tracklets] / st23tracklet_pz_st3[n_st23tracklets]) * (1930. - st23tracklet_z_st3[n_st23tracklets]);
+            st23tracklet_y_CAL[n_st23tracklets] = st23tracklet_y_st3[n_st23tracklets] + (st23tracklet_py_st3[n_st23tracklets] / st23tracklet_pz_st3[n_st23tracklets]) * (1930. - st23tracklet_z_st3[n_st23tracklets]);
+            st23tracklet_chisq[n_st23tracklets] = track->getChisq();
+            st23tracklet_prob[n_st23tracklets] = track->getProb();
+            st23tracklet_quality[n_st23tracklets] = track->getQuality();
+            st23tracklet_isValid[n_st23tracklets] = track->isValid();
+            st23tracklet_nhits_st1[n_st23tracklets] = track->getNHitsInStation(1);
+            st23tracklet_nhits_st2[n_st23tracklets] = track->getNHitsInStation(2);
+            st23tracklet_nhits_st3[n_st23tracklets] = track->getNHitsInStation(3);
+
+            ++n_st23tracklets;
+            if (n_st23tracklets >= 100)
                 break;
         }
         //std::cout<<"print out of n_st3tracklets: "<<n_st3tracklets<<std::endl;
@@ -1122,6 +1211,12 @@ int SimAna::GetNodes(PHCompositeNode* topNode)
             std::cout << "ERROR:: did not find SQRecSt3TrackletVector. Abort" << std::endl;
             return Fun4AllReturnCodes::ABORTEVENT;
         }
+	//flag
+	_recSt23TrackletVector = findNode::getClass<SQTrackVector>(topNode, "SQRecSt23TrackletVector");
+	if (!_recSt23TrackletVector) {
+            std::cout << "ERROR:: did not find SQRecSt23TrackletVector. Abort" << std::endl;
+            return Fun4AllReturnCodes::ABORTEVENT;
+        }
     }
 
     _truth = findNode::getClass<PHG4TruthInfoContainer>(topNode, "G4TruthInfo");
@@ -1325,6 +1420,45 @@ void SimAna::MakeTree()
         saveTree->Branch("st3tracklet_nhits_st1", st3tracklet_nhits_st1, "st3tracklet_nhits_st1[n_st3tracklets]/I");
         saveTree->Branch("st3tracklet_nhits_st2", st3tracklet_nhits_st2, "st3tracklet_nhits_st2[n_st3tracklets]/I");
         saveTree->Branch("st3tracklet_nhits_st3", st3tracklet_nhits_st3, "st3tracklet_nhits_st3[n_st3tracklets]/I");
+	    
+//flag
+        saveTree->Branch("n_st23tracklets", &n_st23tracklets, "n_st23tracklets/I");
+        saveTree->Branch("st23tracklet_charge", st23tracklet_charge, "st23tracklet_charge[n_st23tracklets]/I");
+        saveTree->Branch("st23tracklet_nhits", st23tracklet_nhits, "st23tracklet_nhits[n_st23tracklets]/I");
+        saveTree->Branch("st23tracklet_x_target", st23tracklet_x_target, "st23tracklet_x_target[n_st23tracklets]/F");
+        saveTree->Branch("st23tracklet_y_target", st23tracklet_y_target, "st23tracklet_y_target[n_st23tracklets]/F");
+        saveTree->Branch("st23tracklet_z_target", st23tracklet_z_target, "st23tracklet_z_target[n_st23tracklets]/F");
+        saveTree->Branch("st23tracklet_px_target", st23tracklet_px_target, "st23tracklet_px_target[n_st23tracklets]/F");
+        saveTree->Branch("st23tracklet_py_target", st23tracklet_py_target, "st23tracklet_py_target[n_st23tracklets]/F");
+        saveTree->Branch("st23tracklet_pz_target", st23tracklet_pz_target, "st23tracklet_pz_target[n_st23tracklets]/F");
+        saveTree->Branch("st23tracklet_x_st1", st23tracklet_x_st1, "st23tracklet_x_st1[n_st23tracklets]/F");
+        saveTree->Branch("st23tracklet_y_st1", st23tracklet_y_st1, "st23tracklet_y_st1[n_st23tracklets]/F");
+        saveTree->Branch("st23tracklet_z_st1", st23tracklet_z_st1, "st23tracklet_z_st1[n_st23tracklets]/F");
+        saveTree->Branch("st23tracklet_px_st1", st23tracklet_px_st1, "st23tracklet_px_st1[n_st23tracklets]/F");
+        saveTree->Branch("st23tracklet_py_st1", st23tracklet_py_st1, "st23tracklet_py_st1[n_st23tracklets]/F");
+        saveTree->Branch("st23tracklet_pz_st1", st23tracklet_pz_st1, "st23tracklet_pz_st1[n_st23tracklets]/F");
+        saveTree->Branch("st23tracklet_x_st3", st23tracklet_x_st3, "st23tracklet_x_st3[n_st23tracklets]/F");
+        saveTree->Branch("st23tracklet_y_st3", st23tracklet_y_st3, "st23tracklet_y_st3[n_st23tracklets]/F");
+        saveTree->Branch("st23tracklet_z_st3", st23tracklet_z_st3, "st23tracklet_z_st3[n_st23tracklets]/F");
+        saveTree->Branch("st23tracklet_px_st3", st23tracklet_px_st3, "st23tracklet_px_st3[n_st23tracklets]/F");
+        saveTree->Branch("st23tracklet_py_st3", st23tracklet_py_st3, "st23tracklet_py_st3[n_st23tracklets]/F");
+        saveTree->Branch("st23tracklet_pz_st3", st23tracklet_pz_st3, "st23tracklet_pz_st3[n_st23tracklets]/F");
+        saveTree->Branch("st23tracklet_x_vtx", st23tracklet_x_vtx, "st23tracklet_x_vtx[n_st23tracklets]/F");
+        saveTree->Branch("st23tracklet_y_vtx", st23tracklet_y_vtx, "st23tracklet_y_vtx[n_st23tracklets]/F");
+        saveTree->Branch("st23tracklet_z_vtx", st23tracklet_z_vtx, "st23tracklet_z_vtx[n_st23tracklets]/F");
+        saveTree->Branch("st23tracklet_px_vtx", st23tracklet_px_vtx, "st23tracklet_px_vtx[n_st23tracklets]/F");
+        saveTree->Branch("st23tracklet_py_vtx", st23tracklet_py_vtx, "st23tracklet_py_vtx[n_st23tracklets]/F");
+        saveTree->Branch("st23tracklet_pz_vtx", st23tracklet_pz_vtx, "st23tracklet_pz_vtx[n_st23tracklets]/F");
+        saveTree->Branch("st23tracklet_m", st23tracklet_m, "st23tracklet_m[n_st23tracklets]/F");
+        saveTree->Branch("st23tracklet_x_CAL", st23tracklet_x_CAL, "st23tracklet_x_CAL[n_st23tracklets]/F");
+        saveTree->Branch("st23tracklet_y_CAL", st23tracklet_y_CAL, "st23tracklet_y_CAL[n_st23tracklets]/F");
+        saveTree->Branch("st23tracklet_chisq", st23tracklet_chisq, "st23tracklet_chisq[n_st23tracklets]/F");
+        saveTree->Branch("st23tracklet_prob", st23tracklet_prob, "st23tracklet_prob[n_st23tracklets]/F");
+        saveTree->Branch("st23tracklet_quality", st23tracklet_quality, "st23tracklet_quality[n_st23tracklets]/F");
+        saveTree->Branch("st23tracklet_isValid", st23tracklet_isValid, "st23tracklet_isValid[n_st23tracklets]/I");
+        saveTree->Branch("st23tracklet_nhits_st1", st23tracklet_nhits_st1, "st23tracklet_nhits_st1[n_st23tracklets]/I");
+        saveTree->Branch("st23tracklet_nhits_st2", st23tracklet_nhits_st2, "st23tracklet_nhits_st2[n_st23tracklets]/I");
+        saveTree->Branch("st23tracklet_nhits_st3", st23tracklet_nhits_st3, "st23tracklet_nhits_st3[n_st23tracklets]/I");
     }
 
     if (_saveVertex) {
